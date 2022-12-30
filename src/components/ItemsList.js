@@ -103,7 +103,7 @@ const ItemsList = () => {
                 <td>{item.kodas}</td>
                 <td>{item.pavadinimas}</td>
                 <td style={{textAlign:"left"}}>{item.aprasymas}</td>
-                <td>{item.grupe}</td>
+                <td>{item.itemGroupId.pavadinimas}</td>
                 <td style={{textAlign:"center"}}>{item.statusas}</td>
                 {(user.includes("ROLE_ADMIN") || user.includes("ROLE_MANAGER")) &&
                 <td >

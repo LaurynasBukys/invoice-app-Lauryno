@@ -9,17 +9,22 @@ const AddCustomer = () => {
   const [vardas, setFirstName] = useState('');
     const [pavarde, setLastName] = useState('');
     const [email, setEmail] = useState('');
-    const [tipas, setType] = useState('');
+    const [tipas, setType] = useState(t('select'));
     const [adresas, setAddress] = useState('');
     const [telNumeris, setPhone] = useState('');
     const [klientoStatusas, setCustomerStatus] = useState(t('select'));
     const navigate = useNavigate();
     const {id} = useParams();
+    
     const activityOption = [
         { value: "Aktyvus", label: "Aktyvus"},
         { value: "Neaktyvus", label: "Neaktyvus"},
     ];
  
+    const clientType = [
+        { value: "Fizinis", label: "Fizinis"},
+        { value: "Juridinis", label: "Juridinis"},
+    ];
 
     const customer = {vardas, pavarde, email, tipas, adresas, telNumeris, klientoStatusas, id};
     const saveCustomer = (e) => {
@@ -110,15 +115,15 @@ const AddCustomer = () => {
 
                 </div>
                 <div className="form-group">
-                    <input
-                       type="text"
-                       className="form-control col-4"
-                       id="tipas"
-                       value={tipas}
-                       onChange={(e) => setType(e.target.value)}
-                       placeholder={t('enterCustomerType')}
+                    <Select
+                       getLabel = {a => a.value }
+                       getOptionValue={a => a} 
+                       id="customer"
+                       placeholder={tipas}
+                       className="col-4 px-0" 
+                       options={clientType}
+                       onChange={(e) => setType(e.value)}
                     /> 
-
                 </div>
                 <div className="form-group">
                     <input
@@ -147,9 +152,9 @@ const AddCustomer = () => {
                         getLabel = {a => a.value }
                         getOptionValue={a => a} 
                         id="customer"
-                        // value={klientoStatusas}
+                        value={klientoStatusas}
                         placeholder={klientoStatusas}
-                        className="col-4 pl-0" 
+                        className="col-4 px-0" 
                         options={activityOption}
                         onChange={(e) => setCustomerStatus(e.value)}
                     >

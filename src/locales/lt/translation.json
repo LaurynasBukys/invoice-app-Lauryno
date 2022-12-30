@@ -104,6 +104,10 @@
     "userNameLength":"Vartotojo vardas turi būti nuo 3 iki 20 simbolių",
     "nameLength":"Vardas turi būti ne daugiau 20 simbolių",
     "lastNameLength":"Pavardė turi būti ne daugiau 20 simbolių",
-    "passwordLength":"Slaptažodis turi būti nuo 6 iki 40 simbolių"
+    "passwordLength":"Slaptažodis turi būti nuo 6 iki 40 simbolių",
+    "itemGroupList":"Prekių grupių sąrašas",
+    "addItemGroup":"Pridėti prekių grupę",
+    "enterItemGroupName":"Įveskite prekių grupės pavadinimą"
+
     
 }

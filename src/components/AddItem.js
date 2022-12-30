@@ -2,6 +2,7 @@ import React from "react";
 import {useNavigate, useParams } from "react-router-dom";
 import {useEffect, useState} from "react";
 import itemService from "../services/item.service";
+import itemGroupService from "../services/itemGroup.service";
 import { t } from "i18next";
 import Select from "react-select";
 
@@ -9,20 +10,38 @@ const AddItem = () => {
     const [pavadinimas, setItemName] = useState('');
     const [kodas, setItemCode] = useState('');
     const [aprasymas, setItemDescription] = useState('');
-    const [grupe, setItemGroup] = useState('');
+    const [grupe, setItemGroup] = useState([]);
+   
     const [statusas, setItemStatus] = useState(t('enterItemStatus'));
     const [bazineKaina, setBazineKaina] = useState('');
     const navigate = useNavigate();
     const {id} = useParams();
+    const [grupeId, setItemGroups] = useState([]);
+
+    const init = () => {
+        itemGroupService
+            .getAll()
+            .then((response) => {
+                console.log("Printing ItemGroup data", response.data);
+                console.log("Gavau", response.data);
+                setItemGroup(response.data);
+                
+            })
+            .catch((error) => {
+                console.log("Ups", error);
+            });
+
+        };
 
     const saveItem = (e) => {
         e.preventDefault();
-        const item = {pavadinimas, kodas, aprasymas, grupe, statusas, bazineKaina, id};
+        const item = {pavadinimas, kodas, aprasymas, grupeId, statusas, bazineKaina, id};
         
         if (id) {
             itemService.update(item)
                 .then(response => {
-                    console.log('Item data updated successfully', response.data);////////
+                    console.log('Item data updated successfully', response.data);
+                    console.log('Item data ', item);
                     navigate('/items'); 
                 })
                 .catch(error => {
@@ -31,7 +50,9 @@ const AddItem = () => {
          else {
             itemService.create(item)
                 .then(response => {
-                    console.log('Item added successfully',  response.data);////////
+                    console.log('Item added successfully',  response.data);
+                    console.log('Item added ',  item);
+
                     navigate('/items');
                 })
                 .catch(error => {
@@ -39,14 +60,17 @@ const AddItem = () => {
                 })}  
         }
 
-    useEffect(() => {
+        
+        useEffect(() => {
+            init();
+
         if (id) {
           itemService.get(id)
             .then(item => {
                 setItemName(item.data.pavadinimas);
                 setItemCode(item.data.kodas);
                 setItemDescription(item.data.aprasymas);
-                setItemGroup(item.data.grupe);
+                setItemGroups(item.data.grupeId);
                 setItemStatus(item.data.statusas);
                 setBazineKaina(item.data.bazineKaina);     
             })
@@ -54,7 +78,8 @@ const AddItem = () => {
                 console.log('Something went wrong', error);
             })
         }
-    },[])
+    },);
+
 
     const activityOption = [
         { value: "Aktyvus", label: "Aktyvus"},
@@ -99,7 +124,7 @@ const AddItem = () => {
                     /> 
                 </div>
 
-                <div className="form-group">
+                {/* <div className="form-group">
                     <input
                        type="text"
                        className="form-control col-4"
@@ -108,19 +133,25 @@ const AddItem = () => {
                        onChange={(e) => setItemGroup(e.target.value)}
                        placeholder={t('enterItemGroup')}
                     /> 
+                </div> */}
+
+                <div className="form-group">
+                    <Select
+                        placeholder={t('select')}
+                        value={grupeId}
+                        options={grupe}
+                        getOptionLabel = {a => a.pavadinimas}
+                        getOptionValue={a=>a}
+                        className="col-4 px-0"
+                        id="grupeId"
+                        onChange={(e) => setItemGroups(e)}
+                        >
+                    </Select>    
                 </div>
 
                 <div className="form-group">
-                    {/* <input
-                       type="text"
-                       className="form-control col-4"
-                       id="statusas"
-                       value={statusas}
-                       onChange={(e) => setItemStatus(e.target.value)}
-                       placeholder={t('enterItemStatus')}
-                    /> */}
                     <Select 
-                        className="col-4 pl-0"
+                        className="col-4 px-0"
                         // id="statusas" 
                         placeholder={statusas}
                         options={activityOption}

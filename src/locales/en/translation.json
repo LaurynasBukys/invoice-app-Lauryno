@@ -104,5 +104,8 @@
     "userNameLength":"The username must be between 3 and 20 characters.",
     "nameLength":"The name must be less than 20 characters.",
     "lastNameLength":"The last name must be less than 20 characters.",
-    "passwordLength":"The password must be between 6 and 40 characters."
+    "passwordLength":"The password must be between 6 and 40 characters.",
+    "itemGroupList":"Item group list",
+    "addItemGroup":"Add item group",
+    "enterItemGroupName":"Enter item group name"
 }

@@ -14,12 +14,14 @@ import BoardManager from "./components/board-manager.component";
 import BoardAdmin from "./components/board-admin.component";
 
 import ItemsList from "./components/ItemsList";
+import ItemGroupList from "./components/ItemGroupList";
 import InvoiceList from "./components/InvoiceList";
 import AddInvoice from "./components/AddInvoice";
 
 // import AuthVerify from "./common/auth-verify";
 import EventBus from "./common/EventBus";
 import AddItem from "./components/AddItem";
+import AddItemGroup from "./components/AddItemGroup";
 import AddCustomer from "./components/AddCustomer";
 import CustomersList from "./components/CustomersList";
 import InvoicePreview from "./components/InvoicePreview";
@@ -48,6 +50,7 @@ class AppLogin extends Component {
       currentUser: undefined,
       showInvoices: false,
       showItems: false,
+      showItemGroup: false,
       showCustomers: false,
       showUsers: false,
     };
@@ -67,6 +70,7 @@ class AppLogin extends Component {
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
         showInvoices: user.roles.includes("ROLE_ADMIN") || user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_MANAGER"),       
         showItems: user.roles.includes("ROLE_ADMIN") || user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_MANAGER"),
+        showItemGroup: user.roles.includes("ROLE_ADMIN") || user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_MANAGER"),
         showCustomers: user.roles.includes("ROLE_ADMIN") || user.roles.includes("ROLE_USER") || user.roles.includes("ROLE_MANAGER"),
         showUsers: user.roles.includes("ROLE_ADMIN"),
       });
@@ -90,13 +94,14 @@ class AppLogin extends Component {
       showUserBoard: false,
       showInvoices: false,
       showItems: false,
+      showItemGroup: false,
       showCustomers: false,
       showUsers: false,
     });
   }
    
   render() {
-    const { currentUser, showUserBoard, showManagerBoard, showAdminBoard, showInvoices, showItems, showCustomers, showUsers } = this.state;
+    const { currentUser, showUserBoard, showManagerBoard, showAdminBoard, showInvoices, showItems, showItemGroup, showCustomers, showUsers } = this.state;
     
     const {t} = this.props
 
@@ -137,6 +142,14 @@ class AppLogin extends Component {
               <li className="nav-item">
                 <Link to={"/items"} className="nav-link">
                 {t('items')}
+                </Link>
+              </li>
+            )}
+
+            {showItemGroup && (
+              <li className="nav-item">
+                <Link to={"/itemGroup"} className="nav-link">
+                {t('itemGroup')}
                 </Link>
               </li>
             )}
@@ -230,6 +243,10 @@ class AppLogin extends Component {
             <Route path="/items" element={isAdmin || isManager || isUser ? <ItemsList /> : <Navigate to ="/login"/>}></Route>
             <Route path="/items/add/" element={isAdmin || isManager ? <AddItem /> : <Navigate to ="/login"/>}></Route>
             <Route path="/items/edit/:id" element={isAdmin || isManager ? <AddItem /> : <Navigate to ="/login"/>}></Route>
+
+            <Route path="/itemGroup" element={isAdmin || isManager || isUser ? <ItemGroupList /> : <Navigate to ="/login"/>}></Route>
+            <Route path="/itemGroup/add/" element={isAdmin || isManager ? <AddItemGroup /> : <Navigate to ="/login"/>}></Route>
+            <Route path="/itemGroup/edit/:id" element={isAdmin || isManager ? <AddItemGroup /> : <Navigate to ="/login"/>}></Route>
 
             <Route path="/customers" element={isAdmin || isManager || isUser ? <CustomersList /> : <Navigate to ="/login"/>}></Route>
             <Route path="/customers/add" element={isAdmin || isManager ? <AddCustomer /> : <Navigate to ="/login"/>}></Route>
